@@ -22,7 +22,7 @@ pipeline {
 
         stage('terraform') {
             steps {
-                sh '/opt/homebrew/bin/terraform apply -auto-approve -no-color'
+                input(message: 'Aqui se ejecuta Terraform, Esta de acuerdo?', ok: 'Proceed', submitterParameter: 'APPROVER')
             }
         }
     }
