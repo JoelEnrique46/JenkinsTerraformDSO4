@@ -14,7 +14,12 @@ pipeline {
                 checkout scm
             }
         }
-    stage('Approval for Terraform') {
+        stage('tfsec') {
+          steps {
+            input(message: 'Validacion con tfsec', ok: 'Proceed', submitterParameter: 'APPROVER')
+          }
+        }
+        stage('Approval for Terraform') {
             steps {
                 input(message: 'Approval required before Terraform', ok: 'Proceed', submitterParameter: 'APPROVER')
             }
