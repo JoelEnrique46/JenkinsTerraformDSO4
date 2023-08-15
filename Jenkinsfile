@@ -14,12 +14,12 @@ pipeline {
                 checkout scm
             }
         }
-        stage('tfsec') {
-          steps {
-            input(message: 'Validacion con tfsec', ok: 'Proceed', submitterParameter: 'APPROVER')
-          }
-        }
-        stage('Approval for Terraform') {
+    stage('tfsec') {
+      steps {
+        sh ' /usr/local/bin/docker run --rm -v "$(pwd):/src" aquasec/tfsec .'
+      }
+    }
+    stage('Approval for Terraform') {
             steps {
                 input(message: 'Approval required before Terraform', ok: 'Proceed', submitterParameter: 'APPROVER')
             }
@@ -27,7 +27,7 @@ pipeline {
 
         stage('terraform') {
             steps {
-                input(message: 'Aqui se ejecuta Terraform, Esta de acuerdo?', ok: 'Proceed', submitterParameter: 'APPROVER')
+                sh '/opt/homebrew/bin/terraform apply -auto-approve -no-color'
             }
         }
     }
